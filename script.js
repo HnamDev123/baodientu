@@ -210,7 +210,7 @@ $('#readBtn').addEventListener('click', async e => {
   e.currentTarget.disabled = true;
   const paper = $('#paper'), curtain = $('#curtain');
   curtain.className = 'cover';
-  await wait(820);
+  await wait(2600);                                     // giữ màn chắn để đọc dòng chữ chuyển cảnh
   paper.hidden = false;
   document.body.classList.remove('lock');
   bloom.hidden = true; bloom.classList.add('out');

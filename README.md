@@ -11,4 +11,4 @@ Website tĩnh (HTML/CSS/JS thuần), không cần build.
 - `index.html` – khung trang (loading, chào mừng, hoa nở, trang báo)
 - `style.css` – giao diện (mobile + máy tính)
 - `script.js` – hiệu ứng loading theo mạng thật, hoa nở, cánh hoa rơi, mô phỏng nửa đường tròn đơn vị
-- `assets/` – logo Binh Minh
+- Ảnh `khai-giang-2026` và `phu-nu-20-10` đã nhúng thẳng vào `index.html` (mục `.pages`, trong lời tri ân), không cần thư mục `assets/`.
