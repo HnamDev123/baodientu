@@ -44,19 +44,13 @@ const weight = { logo: .3, fonts: .35, page: .35 };
 const t0 = performance.now();
 const MIN_MS = 1500;                                    // để người dùng kịp thấy hiệu ứng
 
-// (a) tải logo theo byte để có % thật
+// (a) logo đã nhúng sẵn trong trang, chờ ảnh giải mã xong
 async function loadLogo() {
+  const im = $('#ld-logo');
   try {
-    const res = await fetch('assets/logo-shield.webp', { cache: 'force-cache' });
-    const total = +res.headers.get('content-length') || 0;
-    if (!res.body || !total) { await res.blob(); parts.logo = 1; return; }
-    const reader = res.body.getReader(); let got = 0;
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      got += value.length; parts.logo = Math.min(.98, got / total);
-    }
-  } catch (e) { /* offline: bỏ qua */ }
+    if (im.decode) await im.decode();
+    else if (!im.complete) await new Promise(r => { im.onload = im.onerror = r; });
+  } catch (e) { /* bỏ qua */ }
   parts.logo = 1;
 }
 // (b) phông chữ (có timeout để không treo khi mạng chặn Google Fonts)
