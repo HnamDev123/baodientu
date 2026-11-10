@@ -319,52 +319,63 @@ td,thead th{transition:background .3s,color .3s}
 
 
 /* =====================================================
-   ẢNH "TRANG VỞ" LƠ LỬNG (phần lời tri ân)
+   ẢNH "TRANG VỞ" LƠ LỬNG Ở GÓC MÀN HÌNH (phần lời tri ân)
    ===================================================== */
-.pages{display:flex;justify-content:center;align-items:flex-start;margin:16px auto 4px;padding:6px 4px 0}
-.pg{width:min(47vw,236px);flex:none;opacity:0;transform:translateY(26px) scale(.92);filter:blur(6px)}
-.pg-a{--r:-3.5deg;z-index:1}
-.pg-b{--r:3deg;margin-left:-14px;margin-top:20px;z-index:2}
-.show-t .pg{animation:pgIn 1s cubic-bezier(.2,.9,.2,1) forwards}
-.show-t .pg-a{animation-delay:2.5s}.show-t .pg-b{animation-delay:2.85s}
-@keyframes pgIn{to{opacity:1;transform:none;filter:none}}
+.ph{position:absolute;z-index:5;pointer-events:none;width:min(31vw,150px);
+  top:calc(env(safe-area-inset-top,0px) + 14px);
+  opacity:0;transform:translateY(24px) scale(.9);filter:blur(6px)}
+.ph-a{left:3vw;--r:-5deg}
+.ph-b{right:3vw;top:calc(env(safe-area-inset-top,0px) + 22px);--r:4deg}
+.ph-on .ph{animation:phIn 1s cubic-bezier(.2,.9,.2,1) forwards}
+.ph-on .ph-a{animation-delay:.9s}.ph-on .ph-b{animation-delay:1.25s}
+@keyframes phIn{to{opacity:1;transform:none;filter:none}}
 
-.sheet{position:relative;background:#fffef8;border-radius:3px 8px 8px 3px;padding:9px 9px 6px 24px;
-  transform:rotate(var(--r));animation:pgFloat 6.5s ease-in-out infinite;
-  box-shadow:0 1px 0 #fff inset,0 14px 28px rgba(47,47,133,.20),0 3px 6px rgba(47,47,133,.12);
-  background-image:linear-gradient(90deg,transparent 17px,rgba(226,70,70,.5) 17px 18.5px,transparent 18.5px);
-  transition:box-shadow .4s ease}
-.pg-b .sheet{animation-duration:7.5s;animation-delay:-2.6s}
-@keyframes pgFloat{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-10px) rotate(calc(var(--r) * -.35))}}
-/* lỗ bấm của trang vở */
-.sheet::after{content:'';position:absolute;left:5px;top:0;bottom:0;width:11px;pointer-events:none;
-  background:radial-gradient(circle at 50% 50%,#e7e1d0 0 4px,rgba(0,0,0,.14) 4.5px,transparent 5.5px) 0 14% /11px 11px no-repeat,
-             radial-gradient(circle at 50% 50%,#e7e1d0 0 4px,rgba(0,0,0,.14) 4.5px,transparent 5.5px) 0 50% /11px 11px no-repeat,
-             radial-gradient(circle at 50% 50%,#e7e1d0 0 4px,rgba(0,0,0,.14) 4.5px,transparent 5.5px) 0 86% /11px 11px no-repeat}
-/* miếng băng keo dán trang */
-.sheet::before{content:'';position:absolute;top:-9px;left:50%;width:58px;height:17px;margin-left:-22px;z-index:2;
-  background:rgba(255,196,120,.72);transform:rotate(-5deg);box-shadow:0 1px 3px rgba(0,0,0,.12);
+.sheet{position:relative;background:#fffef8;border-radius:3px 8px 8px 3px;padding:7px 7px 16px 20px;
+  transform:rotate(var(--r));animation:phFloat 7s ease-in-out infinite;
+  box-shadow:0 1px 0 #fff inset,0 12px 26px rgba(47,47,133,.22),0 3px 6px rgba(47,47,133,.12);
+  background-image:linear-gradient(90deg,transparent 15px,rgba(226,70,70,.5) 15px 16.5px,transparent 16.5px)}
+.ph-b .sheet{animation-duration:8.5s;animation-delay:-3s}
+@keyframes phFloat{
+  0%,100%{transform:translate(0,0) rotate(var(--r))}
+  33%{transform:translate(7px,-12px) rotate(calc(var(--r) * -.4))}
+  66%{transform:translate(-6px,-5px) rotate(calc(var(--r) * .65))}}
+/* lỗ bấm */
+.sheet::after{content:'';position:absolute;left:4px;top:0;bottom:0;width:10px;pointer-events:none;
+  background:radial-gradient(circle,#e7e1d0 0 3.5px,rgba(0,0,0,.14) 4px,transparent 5px) 0 14% /10px 10px no-repeat,
+             radial-gradient(circle,#e7e1d0 0 3.5px,rgba(0,0,0,.14) 4px,transparent 5px) 0 50% /10px 10px no-repeat,
+             radial-gradient(circle,#e7e1d0 0 3.5px,rgba(0,0,0,.14) 4px,transparent 5px) 0 86% /10px 10px no-repeat}
+/* băng keo */
+.sheet::before{content:'';position:absolute;top:-8px;left:50%;width:46px;height:15px;margin-left:-14px;z-index:2;
+  background:rgba(255,196,120,.75);transform:rotate(-5deg);box-shadow:0 1px 3px rgba(0,0,0,.12);
   clip-path:polygon(0 8%,4% 0,8% 10%,12% 0,100% 0,96% 50%,100% 100%,12% 100%,8% 90%,4% 100%,0 92%,3% 50%)}
-.pg-b .sheet::before{background:rgba(160,190,255,.7);transform:rotate(4deg);margin-left:-30px}
+.ph-b .sheet::before{background:rgba(160,190,255,.72);transform:rotate(4deg);margin-left:-24px}
 .sheet img{display:block;width:100%;height:auto;border-radius:2px;background:#eee;box-shadow:0 0 0 1px rgba(0,0,0,.06)}
-.sheet figcaption{margin-top:6px;min-height:44px;font-family:var(--serif);font-style:italic;font-size:12px;line-height:22px;color:var(--navy);text-align:left;
-  background:repeating-linear-gradient(180deg,transparent 0 21px,rgba(90,130,220,.3) 21px 22px)}
-@media(hover:hover){.pg:hover .sheet{animation-play-state:paused;box-shadow:0 20px 38px rgba(47,47,133,.28),0 4px 8px rgba(47,47,133,.14)}.pg:hover{z-index:3}}
-@media(min-width:900px){.pages{justify-content:flex-start;margin-top:14px}.pg{width:min(100%,236px)}}
+
+@media(min-width:600px) and (max-width:899px){.ph{width:min(24vw,190px)}.ph-a{left:5vw}.ph-b{right:5vw}}
+@media(min-width:900px){
+  .ph{width:clamp(180px,15vw,230px)}
+  .ph-a{top:7%;left:3.5%}
+  .ph-b{top:auto;bottom:6%;right:3%}
+}
 @media(prefers-reduced-motion:reduce){.sheet{animation:none}}
 
 /* =====================================================
    CHỮ TRÊN MÀN CHẮN CHUYỂN CẢNH
    ===================================================== */
-.cur-text{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:760px;color:#fff}
-.cur-text>*{opacity:0;transform:translateY(18px);filter:blur(6px)}
-.ct-eye{font-family:var(--mono);font-size:clamp(11px,3vw,13px);letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#ffb27d}
-.ct-bar{display:block;width:64px;height:3px;border-radius:3px;background:var(--orange)}
-.ct-title{font-family:var(--serif);font-weight:800;font-size:clamp(26px,7.4vw,48px);line-height:1.18;letter-spacing:.005em}
-.ct-sub{font-size:clamp(12.5px,3.4vw,15px);color:#c9c9ee}
+.cur-text{display:flex;flex-direction:column;align-items:center;gap:12px;max-width:760px;color:#fff}
+.cur-text>*{opacity:0;transform:translateY(16px);filter:blur(6px)}
+.ct-eye{font-family:var(--mono);font-size:clamp(10px,2.8vw,12px);letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#ffb27d;padding-left:.34em}
+.ct-title{font-family:var(--serif);font-weight:800;text-transform:uppercase;letter-spacing:.12em;padding-left:.12em;
+  font-size:clamp(26px,7.6vw,44px);line-height:1.15}
+.ct-sub{font-size:clamp(11.5px,3.2vw,14px);color:#c9c9ee;letter-spacing:.02em}
+.ct-line{display:block;position:relative;width:min(62vw,280px);height:2px;margin-top:10px;background:rgba(255,255,255,.16);overflow:hidden}
+.ct-line u{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--orange),#ffb27d)}
 #curtain.cover .cur-text>*{animation:rise .85s cubic-bezier(.2,.8,.2,1) forwards}
 #curtain.cover .ct-eye{animation-delay:.55s}
-#curtain.cover .ct-bar{animation-delay:.75s}
-#curtain.cover .ct-title{animation-delay:.9s}
-#curtain.cover .ct-sub{animation-delay:1.2s}
+#curtain.cover .ct-title{animation-delay:.75s}
+#curtain.cover .ct-sub{animation-delay:1s}
+#curtain.cover .ct-line{animation-delay:1.1s}
+#curtain.cover .ct-line u{animation:ctFill 1.4s 1.2s cubic-bezier(.5,0,.2,1) forwards}
+@keyframes ctFill{to{width:100%}}
 #curtain.open .cur-text>*{opacity:1;transform:none;filter:none}
+#curtain.open .ct-line u{width:100%}

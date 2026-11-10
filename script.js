@@ -193,6 +193,7 @@ startBtn.addEventListener('click', async () => {
   await wait(60);
   petalBurst(36);                                       // cánh hoa bay nhẹ nhàng
   bouquet.classList.add('go');
+  bloom.classList.add('ph-on');                         // ảnh trang vở bay vào góc màn hình
   $('.bouquet-box').classList.add('lit');
   const sk = $('#sparks');
   for (let i = 0; i < 18; i++) {
