@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Báo điện tử 10A4 · Tri ân thầy cô 20/11 · Binh Minh International School</title>
+<meta name="description" content="Báo điện tử tri ân thầy cô nhân ngày 20/11 và bài học Toán 10: Giá trị lượng giác của một góc từ 0° đến 180°. Một sản phẩm của nhóm BTS lớp 10A4.">
+<meta name="theme-color" content="#2f2f85">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="is-loading">
+
+<!-- ============ 1. LOADING (kiểu công nghệ, tiến độ theo mạng thật) ============ -->
+<div id="loader" role="status" aria-live="polite">
+  <div class="ld-grid"></div>
+  <div class="ld-stream" id="ldStream" aria-hidden="true"></div>
+  <div class="ld-dots" id="ldDots" aria-hidden="true"></div>
+  <div class="ld-center">
+    <div class="ld-frame">
+      <div class="ld-rings" aria-hidden="true"><i class="ring a"></i><i class="ring b"></i><i class="ring c"></i></div>
+      <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+      <div class="ld-scan"></div>
+      <img id="ld-logo" src="assets/logo-shield.webp" alt="Logo Binh Minh International School" width="497" height="640">
+    </div>
+    <h1 class="ld-title">BINH MINH INTERNATIONAL</h1>
+    <p class="ld-credit">Một sản phẩm đến từ nhóm BTS lớp 10A4</p>
+    <div class="ld-meter">
+      <div class="ld-bar"><span id="ld-fill"></span></div>
+      <div class="ld-row"><span id="ld-status">KHỞI TẠO HỆ THỐNG…</span><b id="ld-pct">0%</b></div>
+    </div>
+  </div>
+</div>
+
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<!-- ============ 2. CHÀO MỪNG ============ -->
+<section id="welcome" class="stage" hidden>
+  <div class="welcome-bg"></div>
+  <div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="symbols" id="symbols" aria-hidden="true"></div>
+  <p id="greet" class="greet" aria-live="polite"></p>
+  <button id="startBtn" class="btn-start" type="button" hidden>
+    <span>Nhấn để bắt đầu</span><i></i>
+  </button>
+</section>
+
+<!-- ============ 3. HOA NỞ + LỜI TRI ÂN ============ -->
+<section id="bloom" class="stage" hidden>
+  <div class="bloom-wrap">
+    <div class="bouquet-box"><div class="rays"></div><div class="halo"></div><div class="sparks" id="sparks"></div><svg id="bouquet" viewBox="0 0 400 470" aria-hidden="true"></svg></div>
+    <article class="tribute">
+      <p class="eyebrow">20/11 · Ngày Nhà giáo Việt Nam</p>
+      <h2>Thư tri ân gửi thầy cô</h2>
+      <p class="t-line">Có những người lái đò lặng lẽ, đưa cả một thế hệ sang bờ tri thức mà chưa bao giờ đòi hỏi một lời cảm ơn.</p>
+      <p class="t-line">Mỗi bài giảng, mỗi nét phấn trên bảng, mỗi lời nhắc nhở của thầy cô đều là một viên gạch xây nên tương lai của chúng em.</p>
+      <p class="t-line">Nhân ngày 20/11, tập thể lớp 10A4 xin kính chúc quý thầy cô luôn dồi dào sức khỏe, hạnh phúc và mãi là ngọn lửa nhiệt huyết của ngôi trường Bình Minh.</p>
+      <p class="t-sign">— Nhóm BTS · Lớp 10A4</p>
+      <button id="readBtn" class="btn-read" type="button">Nhấn để tiếp tục <span aria-hidden="true">↓</span></button>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 4. TRANG BÁO ============ -->
+<main id="paper" hidden>
+  <header class="masthead">
+    <div class="mast-top">
+      <span id="today">Số đặc biệt 20/11</span>
+      <span>Binh Minh International School</span>
+    </div>
+    <div class="mast-main">
+      <img src="assets/logo-shield.webp" alt="" width="54" height="70">
+      <div>
+        <h1>Bình Minh <em>Số</em></h1>
+        <p>Báo điện tử lớp 10A4 · Số đặc biệt tri ân thầy cô</p>
+      </div>
+    </div>
+    <nav class="mast-nav" aria-label="Chuyên mục">
+      <a href="#tri-an">Tri ân 20/11</a>
+      <a href="#toan" class="on">Toán học</a>
+    </nav>
+    <div class="ticker" aria-hidden="true"><div class="track">
+      <span>20/11 · NGÀY NHÀ GIÁO VIỆT NAM</span><span>✦ TRI ÂN THẦY CÔ</span><span>✦ BÀI 5 · CHƯƠNG III · HỆ THỨC LƯỢNG TRONG TAM GIÁC</span><span>✦ BINH MINH INTERNATIONAL SCHOOL</span><span>✦ NHÓM BTS · LỚP 10A4</span>
+      <span>20/11 · NGÀY NHÀ GIÁO VIỆT NAM</span><span>✦ TRI ÂN THẦY CÔ</span><span>✦ BÀI 5 · CHƯƠNG III · HỆ THỨC LƯỢNG TRONG TAM GIÁC</span><span>✦ BINH MINH INTERNATIONAL SCHOOL</span><span>✦ NHÓM BTS · LỚP 10A4</span>
+    </div></div>
+  </header>
+
+  <section id="tri-an" class="strip">
+    <p><b>Gửi thầy cô:</b> “Cảm ơn thầy cô đã gieo mầm tri thức cho chúng em.” — Lớp 10A4</p>
+  </section>
+
+  <section id="toan" class="math">
+    <div class="m-head">
+      <p class="eyebrow">Chuyên mục Toán học · Lớp 10</p>
+      <h2>Giá trị lượng giác của một góc từ <span class="nw">0°</span> đến <span class="nw">180°</span></h2>
+      <p class="m-sub">Chương III · Hệ thức lượng trong tam giác · Bài 5</p>
+    </div>
+
+    <div class="m-grid">
+      <article class="card intro">
+        <h3>1. Nửa đường tròn đơn vị</h3>
+        <p>Trong mặt phẳng tọa độ <i>Oxy</i>, nửa đường tròn tâm <i>O</i>, bán kính 1, nằm phía trên trục hoành gọi là <b>nửa đường tròn đơn vị</b>.</p>
+        <p>Với mỗi góc <i>α</i> (0° ≤ <i>α</i> ≤ 180°), có duy nhất điểm <i>M</i>(<i>x</i><sub>0</sub>; <i>y</i><sub>0</sub>) trên nửa đường tròn sao cho <span class="nw">∠<i>xOM</i> = <i>α</i></span>. Khi đó:</p>
+        <ul class="defs">
+          <li><b>sin <i>α</i></b> = <i>y</i><sub>0</sub> <small>(tung độ)</small></li>
+          <li><b>cos <i>α</i></b> = <i>x</i><sub>0</sub> <small>(hoành độ)</small></li>
+          <li><b>tan <i>α</i></b> = <i>y</i><sub>0</sub> / <i>x</i><sub>0</sub> <small>(<i>α</i> ≠ 90°)</small></li>
+          <li><b>cot <i>α</i></b> = <i>x</i><sub>0</sub> / <i>y</i><sub>0</sub> <small>(<i>α</i> ≠ 0°, 180°)</small></li>
+        </ul>
+        <p class="hint">👉 Kéo thanh trượt bên cạnh để thấy điểm <i>M</i> chạy trên nửa đường tròn và các giá trị thay đổi.</p>
+      </article>
+
+      <article class="card lab" aria-label="Mô phỏng nửa đường tròn đơn vị">
+        <div class="lab-svg"><svg id="circ" viewBox="0 0 640 372" role="img" aria-label="Nửa đường tròn đơn vị"></svg></div>
+        <div class="slider">
+          <label for="ang">Góc <i>α</i> = <output id="angOut">45°</output></label>
+          <input id="ang" type="range" min="0" max="180" step="1" value="45">
+          <button id="playBtn" class="play" type="button">▶ Tự chạy</button>
+        </div>
+        <div class="presets" id="presets"></div>
+        <div class="vals">
+          <div><span>sin α</span><b id="vSin">—</b></div>
+          <div><span>cos α</span><b id="vCos">—</b></div>
+          <div><span>tan α</span><b id="vTan">—</b></div>
+          <div><span>cot α</span><b id="vCot">—</b></div>
+        </div>
+      </article>
+
+      <article class="card table-card">
+        <h3>2. Bảng giá trị lượng giác của các góc đặc biệt</h3>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>120°</th><th>135°</th><th>150°</th><th>180°</th></tr></thead>
+            <tbody>
+              <tr><th>sin α</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td></tr>
+              <tr><th>cos α</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1/2</td><td>−√2/2</td><td>−√3/2</td><td>−1</td></tr>
+              <tr><th>tan α</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td class="no">∄</td><td>−√3</td><td>−1</td><td>−√3/3</td><td>0</td></tr>
+              <tr><th>cot α</th><td class="no">∄</td><td>√3</td><td>1</td><td>√3/3</td><td>0</td><td>−√3/3</td><td>−1</td><td>−√3</td><td class="no">∄</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint">∄: không xác định. Hai góc bù nhau (<i>α</i> và 180° − <i>α</i>) có sin bằng nhau, còn cos, tan, cot đối nhau.</p>
+      </article>
+
+      <article class="card rel">
+        <h3>3. Hai góc bù nhau</h3>
+        <ul class="defs">
+          <li>sin(180° − <i>α</i>) = sin <i>α</i></li>
+          <li>cos(180° − <i>α</i>) = − cos <i>α</i></li>
+          <li>tan(180° − <i>α</i>) = − tan <i>α</i></li>
+          <li>cot(180° − <i>α</i>) = − cot <i>α</i></li>
+        </ul>
+        <p>Hệ thức cơ bản: <b>sin²<i>α</i> + cos²<i>α</i> = 1</b>.</p>
+      </article>
+    </div>
+
+    <p class="demo-end">✦ Bản demo — nội dung bài học sẽ được bổ sung tiếp ✦</p>
+  </section>
+
+  <footer class="foot">
+    <p>Binh Minh International School · Một sản phẩm đến từ nhóm BTS lớp 10A4</p>
+  </footer>
+</main>
+
+<div id="curtain" aria-hidden="true"></div>
+<script src="script.js"></script>
+</body>
+</html>
