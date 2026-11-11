@@ -1,14 +1,16 @@
-# Báo điện tử 10A4 · Tri ân thầy cô 20/11 (bản demo)
+# Báo điện tử 10A4 · Tri ân thầy cô 20/11
 
-Website tĩnh (HTML/CSS/JS thuần), không cần build.
+Website tĩnh (HTML/CSS/JS thuần), không cần build, gồm **hai link**:
+
+- `/` (`index.html`) – giới thiệu "Một sản phẩm đến từ nhóm …", có loading, ảnh trang vở lơ lửng, rồi **tự chuyển** sang trang bài học.
+- `/bai-hoc` (`bai-hoc.html`) – chủ đề chính: Giá trị lượng giác của góc từ 0° đến 180°. Xem hết bài thì công thức bay thành chữ **TRI ÂN THẦY CÔ**, rồi thành **con thuyền** và hiện lời tri ân.
 
 ## Đưa lên Vercel
-1. Đẩy thư mục này lên GitHub (hoặc kéo thả thư mục vào vercel.com/new).
-2. Framework Preset: **Other**. Build Command: để trống. Output Directory: để trống (thư mục gốc).
-3. Deploy.
+1. Kéo thả thư mục này vào vercel.com/new (hoặc đẩy lên GitHub).
+2. Framework Preset: **Other**. Build/Output: để trống. Deploy.
 
 ## Cấu trúc
-- `index.html` – khung trang (loading, chào mừng, hoa nở, trang báo)
-- `style.css` – giao diện (mobile + máy tính)
-- `script.js` – hiệu ứng loading theo mạng thật, hoa nở, cánh hoa rơi, mô phỏng nửa đường tròn đơn vị
-- Ảnh `khai-giang-2026` và `phu-nu-20-10` đã nhúng thẳng vào `index.html` (mục `.pages`, trong lời tri ân), không cần thư mục `assets/`.
+- `style.css` – giao diện dùng chung (mobile + máy tính)
+- `common.js` – gợn sóng nút, cánh hoa rơi
+- `intro.js` – loading + giới thiệu + chuyển trang (đổi tên nhóm trong `index.html`, thẻ `.in-group`)
+- `lesson.js` – mô phỏng nửa đường tròn đơn vị + hiệu ứng kết bài
