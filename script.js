@@ -372,4 +372,162 @@ function startPlay() {
 }
 playBtn.addEventListener('click', () => playing ? stopPlay() : startPlay());
 drawBase(); draw(+slider.value);
+
+/* =====================================================
+   KẾT BÀI: công thức toán ghép thành chữ "TRI ÂN", rồi thành con thuyền, rồi hiện lời tri ân
+   ===================================================== */
+(function finale() {
+  const sec = $('#finale'); if (!sec) return;
+  const cvs = $('#fx'), c = cvs.getContext('2d'), msg = $('#finMsg'), again = $('#finReplay');
+  const ONE = ['α', 'β', 'π', '√', '∠', '°', 'θ', 'Δ', '∑', '½', '²', '=', '+', '−', 'x', 'y', '0', '1'];
+  const TOK = ['sin', 'cos', 'tan', 'cot', '30°', '45°', '60°', '90°', '120°', '135°', '150°', '180°'];
+  const MONO = '"JetBrains Mono",ui-monospace,Consolas,monospace';
+  const COL = { text: ['#ffffff', '#ffffff', '#ffb27d', '#ffb27d', '#aeaeff'], hull: ['#ffb27d', '#f26a21', '#ffd9bd'], wave: ['#8fd3ff', '#5cb4ff', '#c4eaff'] };
+  const pickC = a => a[(Math.random() * a.length) | 0];
+  const ease = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  let W = 0, H = 0, D = 1, P = [], T = null, phase = 'idle', inView = false, raf = 0, timers = [], started = false, fs = 11;
+
+  /* lấy các điểm nằm trong hình vẽ (toạ độ px CSS); kênh xanh = sóng nước, kênh đỏ = thân thuyền */
+  function pts(draw) {
+    const o = document.createElement('canvas'); o.width = W; o.height = H;
+    const x = o.getContext('2d', { willReadFrequently: true });
+    draw(x);
+    const d = x.getImageData(0, 0, W, H).data, a = [];
+    for (let y = 0; y < H; y += 3) for (let xx = 0; xx < W; xx += 3) {
+      const i = (y * W + xx) * 4;
+      if (d[i + 3] > 140) a.push([xx, y, d[i + 2] > d[i] ? 1 : 0]);
+    }
+    return a;
+  }
+  function pick(a, n) {
+    for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; }
+    const out = [];
+    for (let i = 0; i < n; i++) { const s = a[i % a.length], dup = i >= a.length; out.push([s[0] + (dup ? rnd(-2, 2) : 0), s[1] + (dup ? rnd(-2, 2) : 0), s[2]]); }
+    return out;
+  }
+
+  function setup() {
+    W = sec.clientWidth; H = sec.clientHeight; if (!W || !H) return false;
+    D = Math.min(2, devicePixelRatio || 1);
+    cvs.width = Math.round(W * D); cvs.height = Math.round(H * D);
+    fs = W < 700 ? 10 : 13;
+    const N = W < 700 ? 400 : 700;
+
+    const text = pts(x => {
+      const tw = Math.min(W * .86, 880);
+      x.fillStyle = '#f00'; x.textAlign = 'center'; x.textBaseline = 'middle';
+      x.font = '800 100px "Playfair Display",Georgia,serif';
+      let size = 100 * tw / x.measureText('TRI ÂN').width;
+      size = Math.min(size, H * .34);
+      x.font = '800 ' + size + 'px "Playfair Display",Georgia,serif';
+      x.fillText('TRI ÂN', W / 2, H * .36);
+    });
+    const boat = pts(x => {
+      const bw = Math.min(W * .94, 680), bh = bw * .58, ox = (W - bw) / 2, oy = H * .34 - bh * .5;
+      const p = (u, v) => [ox + u * bw, oy + v * bh];
+      x.fillStyle = '#f00'; x.beginPath();
+      x.moveTo(...p(.02, .40));
+      x.bezierCurveTo(...p(.12, .78), ...p(.40, .92), ...p(.62, .88));
+      x.bezierCurveTo(...p(.80, .84), ...p(.90, .62), ...p(.93, .30));
+      x.lineTo(...p(.98, .02)); x.lineTo(...p(.88, .22));
+      x.bezierCurveTo(...p(.84, .58), ...p(.72, .70), ...p(.55, .72));
+      x.bezierCurveTo(...p(.35, .74), ...p(.15, .62), ...p(.02, .40));
+      x.closePath(); x.fill();
+      x.strokeStyle = '#00f'; x.lineCap = 'round'; x.lineWidth = Math.max(5, bh * .05);
+      for (let k = 0; k < 2; k++) {
+        x.beginPath();
+        for (let i = 0; i <= 60; i++) { const u = i / 60, q = p(u * 1.02 - .01, .96 + k * .11 + Math.sin(u * 11 + k * 2) * .03); i ? x.lineTo(...q) : x.moveTo(...q); }
+        x.stroke();
+      }
+    });
+    T = { text: pick(text, N), boat: pick(boat, N) };
+
+    if (P.length !== N) {
+      P = Array.from({ length: N }, () => {
+        const one = Math.random() < .72;
+        return { ch: one ? pickC(ONE) : pickC(TOK), g: one ? 0 : 1, x: rnd(0, W), y: rnd(0, H), vx: rnd(-.25, .25), vy: rnd(-.35, -.05), ph: rnd(0, 6.28), a: .35, mv: false, tx: null, ty: 0, k: 0, col: '#c9c9ee', dx: 0, dy: 0 };
+      });
+    }
+    if (phase !== 'idle') apply(phase, true);
+    return true;
+  }
+
+  const colorFor = (name, k) => pickC(name === 'text' ? COL.text : (k ? COL.wave : COL.hull));
+  function apply(name, instant) {
+    P.forEach((p, i) => {
+      const q = T[name][i]; p.tx = q[0]; p.ty = q[1]; p.k = q[2];
+      if (instant) { p.x = p.tx; p.y = p.ty; p.mv = false; p.a = 1; p.col = colorFor(name, p.k); }
+    });
+  }
+  function go(name) {
+    phase = name;
+    const now = performance.now();
+    P.forEach((p, i) => {
+      const q = T[name][i];
+      p.fx = p.x; p.fy = p.y; p.tx = q[0]; p.ty = q[1]; p.k = q[2];
+      p.col = colorFor(name, p.k);
+      p.t0 = now + rnd(0, 600); p.dur = rnd(1700, 2400); p.sx = rnd(-70, 70); p.sy = rnd(-70, 70); p.mv = true;
+    });
+  }
+
+  function frame() {
+    raf = 0; if (!inView || !W) return;
+    const now = performance.now();
+    c.setTransform(D, 0, 0, D, 0, 0); c.clearRect(0, 0, W, H);
+    for (const p of P) {
+      if (p.mv) {
+        const k = Math.max(0, Math.min(1, (now - p.t0) / p.dur)), e = ease(k);
+        p.x = p.fx + (p.tx - p.fx) * e + Math.sin(Math.PI * e) * p.sx;
+        p.y = p.fy + (p.ty - p.fy) * e + Math.sin(Math.PI * e) * p.sy;
+        p.a += (1 - p.a) * .08;
+        if (k >= 1) { p.mv = false; p.x = p.tx; p.y = p.ty; }
+        p.dx = p.x; p.dy = p.y;
+      } else if (p.tx != null) {
+        let y = p.ty + Math.cos(now / 1300 + p.ph) * 1.2;
+        if (phase === 'boat') y += p.k ? Math.sin(now / 600 + p.tx / 35) * 4 : Math.sin(now / 1400) * 3;
+        p.dx = p.tx + Math.sin(now / 1100 + p.ph) * 1.2; p.dy = y;
+      } else {
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -10) p.y = H + 10; if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        p.dx = p.x; p.dy = p.y;
+      }
+    }
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    for (let g = 0; g < 2; g++) {
+      c.font = '700 ' + (g ? fs - 1 : fs) + 'px ' + MONO;
+      for (const p of P) if (p.g === g) { c.globalAlpha = p.a; c.fillStyle = p.col; c.fillText(p.ch, p.dx, p.dy); }
+    }
+    c.globalAlpha = 1;
+    if (!reduce) raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    timers.forEach(clearTimeout); timers = [];
+    msg.classList.remove('show'); again.hidden = true;
+    go('text');
+    timers.push(setTimeout(() => go('boat'), 5400));
+    timers.push(setTimeout(() => msg.classList.add('show'), 7800));
+    timers.push(setTimeout(() => { again.hidden = false; }, 9600));
+  }
+  again.addEventListener('click', start);
+
+  const io = new IntersectionObserver(es => {
+    for (const e of es) {
+      inView = e.isIntersecting;
+      if (!inView) continue;
+      if (!T || W !== sec.clientWidth) setup();
+      if (!started) {
+        started = true;
+        if (reduce) { phase = 'boat'; apply('boat', true); msg.classList.add('show'); }
+        else setTimeout(start, 600);
+      }
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+  }, { threshold: .4 });
+  io.observe(sec);
+
+  let rt = 0;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (sec.clientWidth && started) { setup(); if (inView && !raf) raf = requestAnimationFrame(frame); } }, 200); });
+})();
+
 })();
