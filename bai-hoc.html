@@ -170,27 +170,53 @@
   </section>
 
   <footer class="foot">
-    <p>Binh Minh International School · Một sản phẩm đến từ nhóm Adidais lớp 10A4</p>
+    <p>Binh Minh International School · Một sản phẩm đến từ nhóm BTS lớp 10A4</p>
   </footer>
 </main>
 
-<!-- ============ KẾT BÀI: công thức bay thành chữ TRI ÂN + con thuyền ============ -->
-<div id="finale" role="dialog" aria-modal="true" aria-labelledby="finTitle">
-  <canvas id="fx" aria-hidden="true"></canvas>
-  <p class="fin-banner" id="finBanner" aria-hidden="true"></p>
-  <div class="fin-msg" id="finMsg">
-    <p class="fin-eyebrow">20/11 · Lời tri ân</p>
-    <h2 id="finTitle">Tri ân người lái đò</h2>
-    <p class="fin-text">Cảm ơn thầy cô đã gieo mầm tri thức cho chúng em. Kính chúc quý thầy cô luôn dồi dào sức khỏe, hạnh phúc và mãi là ngọn lửa nhiệt huyết của ngôi trường Bình Minh.</p>
-    <p class="fin-sign">— Nhóm Adidais · Lớp 10A4</p>
-    <div class="fin-actions">
-      <button id="finReplay" type="button" hidden>↻ Xem lại</button>
-      <button id="finBack" type="button" hidden>← Về bài học</button>
+<!-- ============ DÂY ĐÈN: rơi từ đầu màn hình khi xem hết bài ============ -->
+<div id="lamp" class="lamp">
+  <div id="lampRig" class="lamp-rig">
+    <svg viewBox="0 0 360 300" aria-hidden="true">
+      <line id="cordLine" x1="180" y1="-4" x2="180" y2="240" stroke="#2f2f85" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <button id="pull" class="pull" type="button" aria-label="Giật dây"></button>
+  </div>
+  <p id="lampHint" class="lamp-hint">Giật dây để tiếp tục ↓</p>
+</div>
+
+<!-- ============ MÀN ĐEN: chữ → hoa nở → lời chúc → ảnh thầy cô ============ -->
+<div id="night" aria-hidden="true">
+  <canvas id="nc"></canvas>
+  <button id="nMute" class="n-mute" type="button" aria-pressed="false" aria-label="Tắt nhạc">♪</button>
+  <div id="nText" class="n-text"></div>
+  <div class="n-copy">
+    <p id="nHead" class="n-head">Gửi thầy cô</p>
+    <div id="nStack" class="n-stack">
+      <p class="n-line">Cảm ơn thầy cô đã kiên nhẫn từng ngày, dù có lúc chúng em chưa ngoan.</p>
+      <p class="n-line">Mỗi bài giảng, mỗi lời nhắc nhở của thầy cô là hành trang chúng em mang theo suốt cuộc đời.</p>
+      <p class="n-line">Cảm ơn thầy cô đã tin tưởng, ngay cả khi chúng em chưa tin vào chính mình.</p>
+      <p class="n-line">Chúc thầy cô luôn dồi dào sức khỏe, bình an và thật nhiều niềm vui.</p>
+      <p class="n-line">Chúc thầy cô mãi giữ ngọn lửa nhiệt huyết trên bục giảng.</p>
+      <p class="n-line">Chúng em yêu quý và biết ơn thầy cô. Chúc mừng ngày Nhà giáo Việt Nam 20/11!</p>
     </div>
+    <p id="nSign" class="n-sign">— Nhóm BTS · Lớp 10A4</p>
+  </div>
+  <div id="nPhotos">
+    <figure class="tp"><img data-src="tc1.jpg" width="320" height="320" alt="Ảnh thầy cô" decoding="async"></figure>
+    <figure class="tp"><img data-src="tc2.jpg" width="320" height="320" alt="Ảnh thầy cô" decoding="async"></figure>
+    <figure class="tp"><img data-src="tc3.jpg" width="320" height="320" alt="Ảnh thầy cô" decoding="async"></figure>
+    <figure class="tp"><img data-src="tc4.jpg" width="320" height="320" alt="Ảnh thầy cô" decoding="async"></figure>
+    <figure class="tp"><img data-src="tc5.jpg" width="320" height="320" alt="Ảnh thầy cô" decoding="async"></figure>
+  </div>
+  <div id="nEnd" class="n-end" hidden>
+    <button id="nReplay" class="n-btn pri" type="button">↻ Xem lại</button>
+    <button id="nBack" class="n-btn" type="button">Quay lại bài</button>
   </div>
 </div>
 
 <script src="common.js"></script>
 <script src="lesson.js"></script>
+<script src="night.js"></script>
 </body>
 </html>

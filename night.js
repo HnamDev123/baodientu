@@ -84,7 +84,7 @@ const MAXP = 130, TRIG = 78;
 
 function setPull(p) {
   pull = p;
-  cord.setAttribute('y2', (360 + p).toFixed(1));
+  cord.setAttribute('y2', (240 + p).toFixed(1));
   pullBtn.style.transform = 'translate(-50%,-50%) translateY(' + (p * scale).toFixed(1) + 'px)';
 }
 function springBack() {
@@ -140,17 +140,25 @@ async function fire() {
   hint.classList.add('gone');
   clickSound(); Music.start();
   lamp.classList.add('snap', 'flick'); springBack();
-  await wait(1100); lamp.classList.add('off');          // đèn tắt, màn hình tối dần
-  await wait(900);
+  document.body.classList.add('lamp-flick');             // trang chớp tắt như bị cúp điện
+  await wait(450); lamp.classList.add('off');
+  await wait(150);
   startNight();
 }
 
-/* đèn: hiện khi cuộn tới, bụi sáng bay trong chùm sáng */
-if ('IntersectionObserver' in window) {
-  new IntersectionObserver((es, io) => es.forEach(e => {
-    if (e.isIntersecting) { lamp.classList.add('in'); loadPhotos(); io.disconnect(); tugT = setInterval(tug, 4200); }
-  }), { threshold: .3 }).observe(lamp);
-} else { lamp.classList.add('in'); }
+/* dây rơi từ đầu màn hình khi người xem đã đọc hết bài (dòng "Hết bài học" hiện trọn vẹn) */
+const sentinel = $('.demo-end');
+const allSeen = () => [...document.querySelectorAll('.m-grid > .card')].every(e => e.classList.contains('in'));
+function dropCord() { lamp.classList.add('in'); loadPhotos(); clearInterval(tugT); tugT = setInterval(tug, 4200); }
+function liftCord() { if (triggered || night.classList.contains('on')) return; lamp.classList.remove('in'); clearInterval(tugT); }
+if (sentinel && 'IntersectionObserver' in window) {
+  let ratio = 0, dwell = 0;
+  new IntersectionObserver(es => es.forEach(e => {
+    ratio = e.intersectionRatio; clearTimeout(dwell);
+    if (ratio >= .9) dwell = setTimeout(() => { if (ratio >= .85 && allSeen() && !lamp.classList.contains('in')) dropCord(); }, 800);
+    else if (ratio < .2) liftCord();
+  }), { threshold: [0, .2, .6, .9, 1] }).observe(sentinel);
+} else if (sentinel) { addEventListener('scroll', () => { if (innerHeight + scrollY >= document.body.scrollHeight - 80 && allSeen()) dropCord(); }, { passive: true }); }
 addEventListener('resize', () => { scale = rig.clientWidth / 360; setPull(pull); });
 setPull(0);
 
@@ -178,7 +186,7 @@ function geom() {
   nc.width = Math.round(W * D); nc.height = Math.round(H * D);
   const mob = W < 700;
   CX = W / 2; CY = H * (mob ? .31 : .37); R = Math.min(W * .26, H * .2, 170);
-  const pw = mob ? Math.max(50, Math.min(64, W * .15)) : Math.min(100, Math.max(76, W * .07));   // ảnh nhỏ gọn
+  const pw = mob ? Math.max(48, Math.min(58, W * .14)) : Math.min(84, Math.max(66, W * .06));   // ảnh nhỏ gọn
   const pos = mob
     ? [[.22, .15, -6], [.80, .17, 5], [.11, .40, -4], [.89, .45, 6], [.50, .065, 2]]
     : [[-.30, -.20, -6], [.30, -.22, 5], [-.40, .10, -4], [.40, .08, 6], [0, -.255, 2]];
@@ -355,7 +363,7 @@ async function backToLesson() {
   night.classList.remove('on'); night.setAttribute('aria-hidden', 'true');
   await wait(1300);
   on = false; cancelAnimationFrame(raf); raf = 0; document.body.classList.remove('night-on');
-  lamp.classList.remove('flick', 'snap', 'off'); hint.classList.remove('gone'); triggered = false; vel = 0; setPull(0);
+  document.body.classList.remove('lamp-flick'); lamp.classList.remove('flick', 'snap', 'off'); hint.classList.remove('gone'); triggered = false; vel = 0; setPull(0);
 }
 $('#nReplay').addEventListener('click', () => { unlockAudio(); startNight(true); });
 $('#nBack').addEventListener('click', backToLesson);
