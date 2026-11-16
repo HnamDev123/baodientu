@@ -4,6 +4,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const rnd = (a, b) => a + Math.random() * (b - a);
+window.BM = { $, reduce, wait, rnd };                  // dùng chung cho night.js
 
 /* ---------- trang trí loading: luồng dữ liệu + hạt sáng ---------- */
 (function decorateLoader() {

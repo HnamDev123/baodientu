@@ -63,7 +63,7 @@ const Music = {
   stop(sec) { this.fade(0, sec); setTimeout(() => bgm.pause(), sec * 1000 + 80); }
 };
 const nMute = $('#nMute');
-nMute.addEventListener('click', () => {
+if (nMute) nMute.addEventListener('click', () => {
   bgm.muted = !bgm.muted;
   nMute.setAttribute('aria-pressed', bgm.muted ? 'true' : 'false');
   nMute.setAttribute('aria-label', bgm.muted ? 'Bật nhạc' : 'Tắt nhạc');
@@ -352,5 +352,8 @@ async function backToLesson() {
 }
 $('#nReplay').addEventListener('click', () => { unlockAudio(); startNight(true); });
 $('#nBack').addEventListener('click', backToLesson);
+addEventListener('keydown', e => {                      // Esc: thoát màn đen, quay lại bài
+  if (e.key === 'Escape' && on && night.classList.contains('on')) backToLesson();
+});
 addEventListener('resize', () => { if (on) { geom(); } });
 })();
