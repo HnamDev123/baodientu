@@ -1,6 +1,12 @@
 (() => {
 'use strict';
-const { $, reduce, wait, rnd } = window.BM;
+const BM = window.BM || {                              // tự có sẵn tiện ích, không cần sửa script.js
+  $: (s, r = document) => r.querySelector(s),
+  reduce: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  wait: ms => new Promise(r => setTimeout(r, ms)),
+  rnd: (a, b) => a + Math.random() * (b - a)
+};
+const { $, reduce, wait, rnd } = BM;
 const lamp = $('#lamp'), night = $('#night');
 if (!lamp || !night) return;
 
@@ -130,7 +136,7 @@ pullBtn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' 
 
 async function fire() {
   if (triggered) return; triggered = true;
-  clearInterval(tugT); unlockAudio();
+  clearInterval(tugT); unlockAudio(); loadPhotos();
   hint.classList.add('gone');
   clickSound(); Music.start();
   lamp.classList.add('snap', 'flick'); springBack();
@@ -142,7 +148,7 @@ async function fire() {
 /* đèn: hiện khi cuộn tới, bụi sáng bay trong chùm sáng */
 if ('IntersectionObserver' in window) {
   new IntersectionObserver((es, io) => es.forEach(e => {
-    if (e.isIntersecting) { lamp.classList.add('in'); io.disconnect(); tugT = setInterval(tug, 4200); }
+    if (e.isIntersecting) { lamp.classList.add('in'); loadPhotos(); io.disconnect(); tugT = setInterval(tug, 4200); }
   }), { threshold: .3 }).observe(lamp);
 } else { lamp.classList.add('in'); }
 addEventListener('resize', () => { scale = rig.clientWidth / 360; setPull(pull); });
@@ -172,7 +178,7 @@ function geom() {
   nc.width = Math.round(W * D); nc.height = Math.round(H * D);
   const mob = W < 700;
   CX = W / 2; CY = H * (mob ? .31 : .37); R = Math.min(W * .26, H * .2, 170);
-  const pw = mob ? Math.max(74, Math.min(96, W * .22)) : Math.min(150, Math.max(110, W * .11));
+  const pw = mob ? Math.max(50, Math.min(64, W * .15)) : Math.min(100, Math.max(76, W * .07));   // ảnh nhỏ gọn
   const pos = mob
     ? [[.22, .15, -6], [.80, .17, 5], [.11, .40, -4], [.89, .45, 6], [.50, .065, 2]]
     : [[-.30, -.20, -6], [.30, -.22, 5], [-.40, .10, -4], [.40, .08, 6], [0, -.255, 2]];
@@ -311,6 +317,7 @@ function resetDOM() {
   nHead.classList.remove('on'); nSign.classList.remove('on'); nEnd.hidden = true;
   lines.forEach(l => l.classList.remove('on', 'off')); photos.forEach(p => p.classList.remove('show'));
 }
+function loadPhotos() { photos.forEach(f => { const im = f.querySelector('img'); if (im && !im.getAttribute('src')) im.src = im.dataset.src; }); }   // nạp ảnh muộn, không làm chậm màn loading
 lines.forEach(l => { let i = 0; l.innerHTML = l.textContent.trim().split(' ').map(w => `<span class="w" style="--i:${i++}">${w}</span>`).join(' '); });
 
 function schedule() {
